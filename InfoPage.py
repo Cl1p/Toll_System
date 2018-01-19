@@ -574,10 +574,13 @@ class AddCptr(object):
             if str(self.data_id_c) != '()':
                 showinfo(title='错误', message='已存在此机位！')
             else:
-                cur.execute("insert into c_sta values(%s, 'N', NULL, NULL, 0)", self.varIC.get())
-                # con.commit()  # **************************************************************************************
-                showinfo(title='提示', message='成功添加' + self.varIC.get() + '号机位！')
-                self.jumpback()
+                try:
+                    cur.execute("insert into c_sta values(%s, 'N', NULL, NULL, 0)", self.varIC.get())
+                    # con.commit()  # **************************************************************************************
+                    showinfo(title='提示', message='成功添加' + self.varIC.get() + '号机位！')
+                    self.jumpback()
+                except pymysql.err.InternalError:
+                    showinfo(title='错误', message='请输入正确的格式！！')
 
     def jumpback(self):
         self.page.destroy()
